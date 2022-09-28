@@ -27,6 +27,7 @@ export default function Students(){
         if(!loggedIn) setLoggedIn(true);
     }
     var [open, setOpen] = React.useState(false);
+    var [deleteModal, setDeleteModal] = React.useState(false);
     var [error, setError] = React.useState(false);
     var [fetched, setFetched] = React.useState(false);
     var [userInformation, setUserInformation] = React.useState(JSON.parse(localStorage.getItem('userInformation')).user);
@@ -37,6 +38,8 @@ export default function Students(){
     var [newSchool, setNewSchool] = React.useState('');
     var [newClass, setNewClass] = React.useState('');
     var [newPhoneNumber, setNewPhoneNumber] = React.useState('');
+    var [newGroup, setNewGroup] = React.useState();
+    var [newClassify, setNewClassify] = React.useState();
     if(!fetched){
         console.log(userInformation._id);
         axios.post('http://localhost:8000/students', {_id: userInformation._id})
@@ -55,9 +58,18 @@ export default function Students(){
 
     var handleEditStudent = () => {
         console.log(onEditStudent);
-        axios.post('http://localhost:8000/modify-student', {_id: onEditStudent._id, newFullName, newClass, newPhoneNumber})
+        axios.post('http://localhost:8000/modify-student', {_id: onEditStudent._id, newFullName, newClass, newPhoneNumber, newClassify, newGroup})
         .then(result => {setFetched(false); setOpen(false)})
         .catch(error => {console.log(error)})
+    }
+    var handleRemoveStudent = () => {
+        axios.post('http://localhost:8000/remove-student', {_id: onEditStudent._id})
+        .then(result => {
+            setDeleteModal(false);
+        })
+        .catch(error => {
+            console.log(error)
+        })
     }
     return (
         <div>
@@ -81,32 +93,16 @@ export default function Students(){
                         defaultValue={onEditStudent.fullName}
                         onChange={e => setNewFullName(e.target.value)}
                         sx={{marginBottom: "10px"}}
+                    />  
+                    <M.TextField
+                        fullWidth
+                        required
+                        id="outlined-required"
+                        label="الصف"
+                        defaultValue={onEditStudent.class}
+                        onChange={e => setNewClass(e.target.value)}
+                        sx={{marginBottom: "10px"}}
                     />
-                    <div className='row'>
-                        <div className='col-6'>
-                            <M.TextField
-                                fullWidth
-                                required
-                                id="outlined-required"
-                                label="المدرسة"
-                                defaultValue={onEditStudent.school}
-                                onChange={e => setNewSchool(e.target.value)}
-                                sx={{marginBottom: "10px"}}
-                            />
-                            
-                        </div>
-                        <div className='col-6'>
-                        <M.TextField
-                                fullWidth
-                                required
-                                id="outlined-required"
-                                label="الصف"
-                                defaultValue={onEditStudent.class}
-                                onChange={e => setNewClass(e.target.value)}
-                                sx={{marginBottom: "10px"}}
-                            />
-                        </div>
-                    </div>
                     <M.TextField
                         fullWidth
                         required
@@ -116,7 +112,63 @@ export default function Students(){
                         onChange={e => setNewPhoneNumber(e.target.value)}
                         sx={{marginBottom: "10px"}}
                     />
+                    <div className='row'>
+                        <div className='col-6'>
+                            <M.FormControl fullWidth>
+                                <M.InputLabel id="demo-simple-select-label" >تصنيف الطالب</M.InputLabel>
+                                <M.Select sx={{marginBottom: "10px"}}
+                                fullWidth
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={newClassify}
+                                label="تصنيف الطالب"
+                                onChange={e => setNewClassify(e.target.value)}
+                            >
+                                    <M.MenuItem value={"منتظم"}>منتظم</M.MenuItem>
+                                    <M.MenuItem value={"منتسب"}>منتسب</M.MenuItem>
+                                    <M.MenuItem defaultChecked value={"صعوبات تعلم"}>صعوبات تعلم</M.MenuItem>
+                                </M.Select>
+                            </M.FormControl>
+                        </div>
+                        <div className='col-6'>
+                            <M.FormControl fullWidth>
+                                <M.InputLabel id="demo-simple-select-label" >الفصل</M.InputLabel>
+                                <M.Select sx={{marginBottom: "10px"}}
+                                fullWidth
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={newGroup}
+                                label="الفصل"
+                                onChange={e => setNewGroup(e.target.value)}
+                            >
+                                    <M.MenuItem value={1}>1</M.MenuItem>
+                                    <M.MenuItem value={2}>2</M.MenuItem>
+                                    <M.MenuItem defaultChecked value={3}>3</M.MenuItem>
+                                    <M.MenuItem value={4}>4</M.MenuItem>
+                                    <M.MenuItem value={5}>5</M.MenuItem>
+                                </M.Select>
+                            </M.FormControl>
+                        </div>
+                    </div>
                     <M.Button variant="contained" onClick={handleEditStudent}>حفظ</M.Button>
+                    <M.Button variant="outlined" onClick={e => setOpen(false)}>إلغاء</M.Button>
+                    </M.Box>
+                    
+                </M.Modal>
+                <M.Modal
+                    open={deleteModal}
+                    onClose={e => setOpen(false)}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <M.Box sx={style}>
+                    <M.Typography id="modal-modal-title" variant="h6" component="h2">
+                        حذف الطالب
+                    </M.Typography>
+                    <M.Typography variant="body1">
+                        سيتم حذف معلومات الطالب: {onEditStudent.fullName} من قاعدة البيانات لديك, هل انت متأكد من الحذف؟
+                    </M.Typography>
+                    <M.Button variant="contained" color={"error"} onClick={handleRemoveStudent}>حفظ</M.Button>
                     <M.Button variant="outlined" onClick={e => setOpen(false)}>إلغاء</M.Button>
                     </M.Box>
                     
@@ -148,7 +200,7 @@ export default function Students(){
                                     {e.fullName}
                                 </M.Typography>
                                 <M.Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                    {e.class}
+                                    {e.class + " - " + "الفصل " + e.group + " - " + e.classify}
                                 </M.Typography>
                                 <M.Typography variant="body2">
                                      الرسائل المرسلة إلى هذا الطالب
@@ -156,7 +208,7 @@ export default function Students(){
                                 </M.CardContent>
                                 <M.Box sx={{paddingRight: "15px"}}>
                                     <M.Chip label="تعديل" clickable key={e} onClick={i => {setOnEditStudents(e); setOpen(true)}} size="small" color="warning" />
-                                    <M.Chip label="حذف"  clickable size="small" color="error" />
+                                    <M.Chip label="حذف"  clickable onClick={i=> {setOnEditStudents(e); setDeleteModal(true)}} size="small" color="error" />
                                 </M.Box>
                                 <M.CardActions>
                                 <M.Button size="small">إرسال رسالة</M.Button>

@@ -49,8 +49,7 @@ var signUp = async(request, response) => {
                         fullName,
                         phoneNumber,
                         password: hashedPass,
-                        school: schoolResult._id,
-                        students: [null]
+                        school: schoolResult._id
                     })
     
                     newUser.save()

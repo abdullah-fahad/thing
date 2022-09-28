@@ -24,11 +24,12 @@ export default function AddStudent() {
     var [phoneNumber, setPhoneNumber] = React.useState();
     var [school, setSchool] = React.useState();
     var [classs, setClasss] = React.useState();
-    var [group, setGroup] = React.useState();
+    var [group, setGroup] = React.useState("");
     var [classify, setClassify] = React.useState();
-
+    console.log(JSON.parse(localStorage.getItem("userInformation")).phoneNumber);
     var handleAddStudent = () => {
-        axios.post('http://localhost:8000/new-student', {tPhoneNumber: JSON.parse(localStorage.getItem("userInformation")).phoneNumber, fullName, phoneNumber, classs, group, classify})
+        
+        axios.post('http://localhost:8000/new-student', {tPhoneNumber: JSON.parse(localStorage.getItem("userInformation")).user.phoneNumber, fullName, phoneNumber, classs, group, classify})
         .then(result => {
             setOpen(false);
         })
@@ -64,43 +65,51 @@ export default function AddStudent() {
                         label="رقم الهاتف"
                         onChange={e => setPhoneNumber(e.target.value)}
                         sx={{marginBottom: "10px"}}
+                    /> 
+                    <M.TextField
+                        fullWidth
+                        required
+                        id="outlined-required"
+                        label="الصف"
+                        onChange={e => setClasss(e.target.value)}
+                        sx={{marginBottom: "10px"}}
                     />
                     <div className='row'>
                         <div className='col-6'>
-                            <M.TextField
+                            <M.FormControl fullWidth>
+                                <M.InputLabel id="demo-simple-select-label" >تصنيف الطالب</M.InputLabel>
+                                <M.Select sx={{marginBottom: "10px"}}
                                 fullWidth
-                                required
-                                id="outlined-required"
-                                label="المدرسة"
-                                onChange={e => setSchool(e.target.value)}
-                                sx={{marginBottom: "10px"}}
-                            />
-                            
-                        </div>
-                        <div className='col-6'>
-                        <M.TextField
-                                fullWidth
-                                required
-                                id="outlined-required"
-                                label="الصف"
-                                onChange={e => setClasss(e.target.value)}
-                                sx={{marginBottom: "10px"}}
-                            />
-                        </div>
-                    </div>
-                    <div className='row'>
-                        <div className='col-6'>
-                            <M.Select sx={{height: "30px"}}
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    value={group}
-                                    label="الفئة"
-                                    onChange={e => setGroup(e.target.value)}
-                                >
-                                    <M.MenuItem value={10}>الأولى</M.MenuItem>
-                                    <M.MenuItem value={20}>الثانية</M.MenuItem>
-                                    <M.MenuItem defaultChecked value={30}>الثالثة</M.MenuItem>
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={classify}
+                                label="تصنيف الطالب"
+                                onChange={e => setClassify(e.target.value)}
+                            >
+                                    <M.MenuItem value={"منتظم"}>منتظم</M.MenuItem>
+                                    <M.MenuItem value={"منتسب"}>منتسب</M.MenuItem>
+                                    <M.MenuItem defaultChecked value={"صعوبات تعلم"}>صعوبات تعلم</M.MenuItem>
                                 </M.Select>
+                            </M.FormControl>
+                        </div>
+                        <div className='col-6'>
+                            <M.FormControl fullWidth>
+                                <M.InputLabel id="demo-simple-select-label" >الفصل</M.InputLabel>
+                                <M.Select sx={{marginBottom: "10px"}}
+                                fullWidth
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={group}
+                                label="الفصل"
+                                onChange={e => setGroup(e.target.value)}
+                            >
+                                    <M.MenuItem value={1}>1</M.MenuItem>
+                                    <M.MenuItem value={2}>2</M.MenuItem>
+                                    <M.MenuItem defaultChecked value={3}>3</M.MenuItem>
+                                    <M.MenuItem value={4}>4</M.MenuItem>
+                                    <M.MenuItem value={5}>5</M.MenuItem>
+                                </M.Select>
+                            </M.FormControl>
                         </div>
                     </div>
                     <M.Button variant="contained" onClick={handleAddStudent}>حفظ</M.Button>

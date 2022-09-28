@@ -66,26 +66,19 @@ var removeStudent = async(request, response) => {
 }
 
 var modifyStudent = async(request, response) => {
-    var {_id, newFullName, newPhoneNumber, newClass} = request.body;
-    Students.findOne({phoneNumber: newPhoneNumber || "666"})
-    .then(found => {
-        if (found !== null) return response.status(400).send("لديك بالفعل طالب يملك رقم الهاتف هذا");
-        else {
-            Students.findByIdAndUpdate({_id}, {
-                fullName: newFullName,
-                phoneNumber: newPhoneNumber,
-                class: newClass
-            })
-            .then(result => {
-                response.status(200).send("تم تعديل بيانات الطالب");
-            })
-            .catch(error => {
-                response.status(500).send("حدث خطأ أثناء تعديل بيانات الطالب");
-            })
-        }
+    var {_id, newFullName, newPhoneNumber, newClass, newClassify, newGroup} = request.body;
+    Students.findByIdAndUpdate({_id}, {
+        fullName: newFullName,
+        phoneNumber: newPhoneNumber,
+        class: newClass,
+        classify: newClassify,
+        group: newGroup
+    })
+    .then(result => {
+        response.status(200).send("تم تعديل بيانات الطالب");
     })
     .catch(error => {
-        response.status(500).send("حدث خطأ ما");
+        response.status(500).send("حدث خطأ أثناء تعديل بيانات الطالب");
     })
 }
 
