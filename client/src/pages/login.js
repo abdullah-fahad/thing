@@ -3,6 +3,7 @@ import * as M from '@mui/material';
 import * as Icons from '@mui/icons-material';
 import axios from 'axios';
 import {motion} from 'framer-motion';
+import {useNavigate} from 'react-router-dom'
 
 
 export default function Login(){
@@ -10,12 +11,13 @@ export default function Login(){
     var [phoneNumber, setPhoneNumber] = React.useState(null);
     var [password, setPassword] = React.useState(null);
     var [error, setError] = React.useState();
+    var navigate = useNavigate();
     var handleLogin = async() =>{
         console.log(password, phoneNumber)
         await axios.post('http://localhost:8000/login', {phoneNumber, password})
         .then(result => {
-            localStorage.setItem("userInformation", result);
-            window.location.reload();
+            localStorage.setItem("userInformation", JSON.stringify(result.data));
+            navigate('/');
         })
         .catch(error => {
             console.log(error);

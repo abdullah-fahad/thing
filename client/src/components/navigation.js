@@ -76,7 +76,7 @@ export default function Navigation() {
   const openTabs = Boolean(anchorEl);
   var handleSignout = () => {
     localStorage.removeItem('userInformation');
-    Window.location.reload();
+    window.location.reload();
   }
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -135,7 +135,15 @@ export default function Navigation() {
         <Divider />
         <List>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton href="/">
+                <ListItemIcon>
+                  <Icons.Archive />
+                </ListItemIcon>
+                <ListItemText primary={"الأرشيف"} />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton href="/students">
                 <ListItemIcon>
                   <Icons.Group />
                 </ListItemIcon>
@@ -148,6 +156,14 @@ export default function Navigation() {
                   <Icons.Group />
                 </ListItemIcon>
                 <ListItemText primary={"المعلمين"} />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton href="/history">
+                <ListItemIcon>
+                  <Icons.History />
+                </ListItemIcon>
+                <ListItemText primary={"سجل الرسائل"} />
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
@@ -178,13 +194,13 @@ export default function Navigation() {
                 aria-controls="panel1a-content"
                 id="panel1a-header"
               >
-                <Typography>السجلات</Typography>
+                <Typography>المستندات</Typography>
               </M.AccordionSummary>
               <M.AccordionDetails>
                 <List>
                 <ListItem disablePadding>
                   <ListItemButton>
-                    <ListItemText primary={"إنشاء سجل جديد +"} />
+                    <ListItemText primary={"إنشاء مستند جديد +"} />
                   </ListItemButton>
                 </ListItem>
                 </List>

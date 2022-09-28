@@ -6,7 +6,9 @@ var messages = new Schema({
     content: {type: String, required: true},
     createdAt: {type: Date, required: true},
     from: {type: String, required: true},
-    to: {type: String, required: true}
+    to: {type: String, required: true},
+    senderId: {type: String, required: true},
+    recieverRole: {type: String, required: true}
 })
 
 module.exports = mongoose.model("Messages", messages);

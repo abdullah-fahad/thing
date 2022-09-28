@@ -97,7 +97,7 @@ export default function Welcome (){
             var appVerifier = window.recaptchaVerifier;
             signInWithPhoneNumber(authentication,phoneNumber,appVerifier)
             .then(result => {
-                setUserInformation(userInformation);
+                setUserInformation(userInformation.data);
                 window.result = result;
             })
             .catch(error => {

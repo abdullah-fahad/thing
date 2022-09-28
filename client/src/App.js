@@ -8,19 +8,21 @@ import Navigation from './components/navigation';
 import Welcome from './components/welcome';
 import Login from './pages/login';
 import Home from './pages/home';
+import MessagesHistory from './pages/messagesHistory';
+import Students from './pages/students';
 
 const theme = createTheme({
   palette: {
     primary: {
-      light: '#3d6bb3',
-      main: '#0d47a1',
-      dark: '#093170',
+      light: '#33ab9f',
+      main: '#009688',
+      dark: '#00695f',
       contrastText: '#fff',
     },
     secondary: {
-      light: '#5a48a7',
-      main: '#311b92',
-      dark: '#221266',
+      light: '#4aedc4',
+      main: '#1de9b6',
+      dark: '#14a37f',
       contrastText: '#000',
     },
     mode: "dark"
@@ -52,6 +54,8 @@ function App() {
         <Routes>
           <Route path='/' exact element={<Home />} />
           <Route path='/login' exact element={<Login />}/>
+          <Route path='/history' exact element={<MessagesHistory />}/>
+          <Route path='/students' exact element={<Students />}/>
         </Routes>
       </Router>
     </ThemeProvider>

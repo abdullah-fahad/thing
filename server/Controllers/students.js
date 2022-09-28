@@ -6,10 +6,10 @@ var mongoose = require("mongoose");
 
 
 var createStudent = async(request, response) => {
-    var {fullName, phoneNumber, tPhoneNumber, classs} = request.body;
+    var {fullName, phoneNumber, tPhoneNumber, classs, group, classify} = request.body;
     if(!isArabic(fullName, {count: 1})) return response.status(400).send("يجب أن يتكون اسم الطالب من احرف عربية");
-    if(phoneNumber.length !== 9) return response.status(400).send("الرجاء إدخال رقم هاتف صحيح(يتكون من 9 أحرف)");
     if(!isArabic(classs, {count: 1})) return response.status(400).send("يجب ان يتم كتابة فصل الطالب بأحرف عربية");
+    
 
     Students.findOne({phoneNumber})
     .then((found) => {
@@ -22,6 +22,8 @@ var createStudent = async(request, response) => {
                     fullName,
                     phoneNumber,
                     class: classs,
+                    group,
+                    classify,
                     school: result.school,
                     teacherId: result._id
                 })
@@ -42,7 +44,7 @@ var createStudent = async(request, response) => {
                 });
             })
             .catch(error => {
-                response.status(500).send("حدث خطأ أثناء ارسال بيانات الطالب")
+                response.status(500).send(error)
             })
 
         }

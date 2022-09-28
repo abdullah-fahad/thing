@@ -4,21 +4,17 @@ import * as Icons from '@mui/icons-material';
 import {motion} from 'framer-motion';
 import Navigation from '../components/navigation';
 import Welcome from '../components/welcome';
+import axios from 'axios';
+import Archieve from '../components/archieve';
 
 export default function Home() {
-    var [loggedIn, setLoggedIn] = React.useState(true);
+    var [loggedIn, setLoggedIn] = React.useState(false);
     if(localStorage.getItem('userInformation') && !loggedIn) setLoggedIn(true);
-
     return(
         <div>
             {loggedIn? <div>
                 <Navigation />
-                <motion.div animate={{y: 0, opacity: "100%"}} initial={{y: -100, opacity: "0%"}}>
-                    <M.Paper elevation={3} sx={{width:"95%", height:"300px", margin: "auto"}}>
-                        <M.Typography variant='p'>آخر 5 رسائل أرسلتها</M.Typography>
-                    </M.Paper>
-                </motion.div>
-
+                <Archieve />
             </div> : <Welcome />}
         </div>
     )

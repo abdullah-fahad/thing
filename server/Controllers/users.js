@@ -85,7 +85,7 @@ var logIn = async(request, response) => {
     if(!user || user === null || user.password === null) return response.status(401).send("كلمة مرور او رقم هاتف خاطئ");
 
     if(await bcrypt.compare(data.password, user.password)){
-        response.status(200).json({token});
+        response.status(200).json({user});
     }
     else response.status(401).send("كلمة مرور او رقم هاتف  خاطئ")
 }

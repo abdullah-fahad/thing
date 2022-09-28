@@ -16,6 +16,7 @@
 /* width */
 ::-webkit-scrollbar {
   width: 2px;
+  height: 2px;
 }
 
 /* Track */
@@ -31,6 +32,11 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555; 
+}
+
+.fit{
+  width: fit-content;
+  margin: auto;
 }
 
 .App-header {
@@ -52,7 +58,12 @@ body{
   background-image: url(https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/GTYSdDW/videoblocks-abstract-polygonal-space-low-poly-dark-background_hcddqssrx_thumbnail-1080_01.png);
   background-repeat: no-repeat;
   background-size: auto;
-  
+  background-attachment: fixed;
+  height: 100%;
+}
+
+.contentGrid {
+  border-bottom: #555 0.5px solid;
 }
 
 .head{
